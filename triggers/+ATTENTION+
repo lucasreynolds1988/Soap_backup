@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+PYTHON=${PYTHON:-python3}
+ROOT="${SOAP_ROOT:-$HOME/Soap}"
+$PYTHON "$ROOT/trigger_attention.py" "$@"

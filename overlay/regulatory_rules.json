@@ -1,0 +1,14 @@
+{
+  "General": [
+    {"body": "OSHA", "rule": "29 CFR 1910 - General Industry"},
+    {"body": "EPA", "rule": "Resource Conservation and Recovery Act"}
+  ],
+  "Aviation": [
+    {"body": "FAA", "rule": "14 CFR Part 43 - Maintenance"}
+  ],
+  "Medical": [
+    {"body": "FDA", "rule": "21 CFR Part 820"},
+    {"body": "CDC", "rule": "Guidelines for Disinfection"}
+  ]
+}
+
