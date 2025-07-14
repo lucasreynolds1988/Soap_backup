@@ -2,6 +2,7 @@
 """Vectorize SOP texts using TF-IDF for warm start recall."""
 import json
 import logging
+import os
 from pathlib import Path
 from typing import List
 
@@ -10,11 +11,8 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 HOME_DIR = Path.home()
-SOAP_ROOT = Path.getenv("SOAP_ROOT")
-if not SOAP_ROOT:
-    SOAP_ROOT = HOME_DIR / "Soap"
-else:
-    SOAP_ROOT = Path(SOAP_ROOT)
+SOAP_ROOT_ENV = os.getenv("SOAP_ROOT")
+SOAP_ROOT = Path(SOAP_ROOT_ENV).expanduser() if SOAP_ROOT_ENV else HOME_DIR / "Soap"
 
 VECTOR_DIR = SOAP_ROOT / "vector_store"
 SOPS_DIR = SOAP_ROOT / "overlay" / "sops"

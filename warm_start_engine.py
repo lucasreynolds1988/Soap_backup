@@ -2,6 +2,7 @@
 """Warm start engine for ATI system."""
 import json
 import logging
+import os
 from pathlib import Path
 
 import joblib
@@ -9,8 +10,9 @@ from scipy import sparse
 from sklearn.metrics.pairwise import cosine_similarity
 
 HOME_DIR = Path.home()
-SOAP_ROOT = Path.getenv("SOAP_ROOT") or str(HOME_DIR / "Soap")
-ROOT = Path(SOAP_ROOT)
+SOAP_ROOT_ENV = os.getenv("SOAP_ROOT")
+SOAP_ROOT = Path(SOAP_ROOT_ENV).expanduser() if SOAP_ROOT_ENV else HOME_DIR / "Soap"
+ROOT = SOAP_ROOT
 VECTOR_DIR = ROOT / "vector_store"
 LOG_FILE = ROOT / "data" / "logs" / "warm_start_engine.log"
 
