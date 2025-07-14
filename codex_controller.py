@@ -14,8 +14,26 @@ from agents.father_phase import run_father
 from agents.mother_phase import run_mother
 from agents.arbiter_phase import run_arbiter
 from agents.soap_phase import run_soap
-from warm_start_engine import load_vectors
+from warm_start_engine import load_vectors, search_similar
 from rag_vectorizer import vectorize
+
+
+def attach_related_sops(queue_dir: Path) -> None:
+    """Attach related SOP paths to queued tasks using vector search."""
+    for task in queue_dir.glob("*.json"):
+        try:
+            data = json.loads(task.read_text())
+            if data.get("status") != "queued":
+                continue
+            raw_text = data.get("raw_text")
+            if not raw_text:
+                continue
+            related = search_similar(raw_text)
+            if related:
+                data["related_sops"] = related
+                task.write_text(json.dumps(data, indent=2))
+        except Exception:
+            continue
 
 
 def process_queue(root: Path) -> None:
@@ -26,6 +44,8 @@ def process_queue(root: Path) -> None:
 
     if not any(queue_dir.glob("*.json")):
         return
+
+    attach_related_sops(queue_dir)
 
     run_watson()
     run_father()
