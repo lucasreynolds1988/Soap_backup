@@ -14,6 +14,8 @@ from agents.father_phase import run_father
 from agents.mother_phase import run_mother
 from agents.arbiter_phase import run_arbiter
 from agents.soap_phase import run_soap
+from warm_start_engine import load_vectors
+from rag_vectorizer import vectorize
 
 
 def process_queue(root: Path) -> None:
@@ -30,6 +32,7 @@ def process_queue(root: Path) -> None:
     run_mother()
     run_arbiter()
     run_soap()
+    vectorize()
 
     for path in queue_dir.glob("*.json"):
         data = json.loads(path.read_text())
@@ -51,9 +54,16 @@ def main() -> None:
         default=5,
         help="Loop sleep seconds",
     )
+    parser.add_argument(
+        "--warm-start",
+        action="store_true",
+        help="Load vector store before running",
+    )
     args = parser.parse_args()
 
     root = Path.home() / "Soap"
+    if args.warm_start:
+        load_vectors()
     while True:
         process_queue(root)
         if not args.loop:

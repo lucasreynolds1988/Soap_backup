@@ -19,7 +19,9 @@ The pipeline operates on tasks placed in `~/Soap/agent_queue/` and outputs compl
   Use `RESTORE_LOG_PATH` to override the default log file (`~/Soap/logs/restore_now.log`).
 - `codex_controller.py` - Processes queued SOP tasks through all agents. Use
   `--loop` to continuously monitor `~/Soap/agent_queue` and export completed
-  SOPs to `~/Soap/overlay/sops/`.
+  SOPs to `~/Soap/overlay/sops/`. Pass `--warm-start` to load any existing vector store before processing.
+- `warm_start_engine.py` loads TF-IDF vectors from `~/Soap/vector_store/` if present.
+- `rag_vectorizer.py` updates the vector store from SOPs in `~/Soap/overlay/sops/`.
 
 ## Running codex_controller.py
 
